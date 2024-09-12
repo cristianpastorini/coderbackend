@@ -6,7 +6,8 @@ import { cartsRouter } from './routes/carts.router.js';
 import handlebars from 'express-handlebars';
 import __dirname from './utils.js';
 import serverSocket from "./config/socket.config.js";
-import { Router } from './routes/realTimeProducts.router.js';
+import router from './routes/realTimeProducts.router.js';
+//import { updateProductsList } from "./config/socket.config.js"
 
 const app = express();
 const PORT = 8080;
@@ -20,7 +21,7 @@ export const cartManager = new CartManager;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', Router);
+app.use('/', router);
 app.use('/api/products', productsRouter);
 app.use('/api/carts', cartsRouter);
 

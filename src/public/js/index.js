@@ -5,21 +5,25 @@ const inputProductId = document.getElementById("input-product-id");
 const btnDeleteProduct = document.getElementById("btn-delete-product");
 
 const loadProductsList = async () => {
-    const response = await fetch("/api/products", { method: "GET" });
-    const data = await response.json();
-    const productsList = data.payload;
+    try {
+        const response = await fetch("/products", { method: "GET" });
+        const data = await response.json();
+        const productsList = data.payload;
 
-    ulProductsList.innerText = "";
+        ulProductsList.innerHTML = ""; // Limpia la lista de productos
 
-    productsList.forEach((products) => {
-        const li = document.createElement("li");
-        li.innerHTML = `<i>Id:</i> ${products.id} - <i>Nombre:</i> ${products.name}`;
-        ulProductsList.append(li);
-    });
+        productsList.forEach((product) => {
+            const li = document.createElement("li");
+            li.innerHTML = `<i>Id:</i> ${product.id} - <i>Nombre:</i> ${product.name}`;
+            ulProductsList.append(li);
+        });
+    } catch (error) {
+        console.log("Error al cargar la lista de productos:", error);
+    }
 };
 
 const createProduct = async (data) => {
-    await fetch("/api/products", {
+    await fetch("/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -29,7 +33,7 @@ const createProduct = async (data) => {
 };
 
 const deleteProduct = async (id) => {
-    await fetch(`/api/products/${id}`, { method: "DELETE" });
+    await fetch(`/products/${id}`, { method: "DELETE" });
     loadProductsList();
 };
 
